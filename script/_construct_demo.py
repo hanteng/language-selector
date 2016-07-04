@@ -24,7 +24,7 @@ json_src_template= u'http://raw.githubusercontent.com/hanteng/country-selector/m
 MSG=dict()
 MSG['Country Selector']     ="Country Selector: Unicode CLDR resource application"
 MSG['Country Selector_Q']   ="Select a country"
-MSG['Country Selector_Q_AJAX']="Select a country (using AJAX)"
+MSG['Country Selector_Q_AJAX'   ]="Select a country (using AJAX)"
 
                    #COUNTRY_SEL, COUNTRY_SEL_Q, COUNTRY_SEL_Q_AJAX, PLACEHOLDER, DATALIST
 output_DEMO_HTML=\

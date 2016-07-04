@@ -22,34 +22,10 @@ def url_request (url):
         return None 
 
 
-def load_json_list (lc_file, u):
-    try:
-        with open(lc_file, 'r', encoding="utf-8") as infile:
-            _select = json.load (infile)
-            print ("Loaded from local file.")
-    except:
-        results = url_request (url  = u)
-        if results is not None:
-            try:
-                _select = results.json()['availableLocales']['full']
-                with open(lc_file, 'w', encoding="utf-8") as outfile:
-                    outfile.write("{}".format(_select).replace("'",'"'))
-                print ("Loaded from designated url.")
-            except:
-                pass
-    return _select
-
-# Full Construction
-URL_CLDR_JSON_AVAIL_LOCALES_LC = os.path.join ("..", dir_outcome, outputfn_locales)
-URL_CLDR_JSON_AVAIL_LOCALES = "https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/availableLocales.json"
-locale_select = load_json_list (URL_CLDR_JSON_AVAIL_LOCALES_LC, URL_CLDR_JSON_AVAIL_LOCALES)
-
-# Partial Selected Construction
-#locale_select = ['en-GB','my', 'zh-Hant'] # Can be extended in the future  'zh-Hant-HK', 'zh-Hant-MO', 'zh-Hans', 'zh-Hans-SG'
-
 ## Retrive data directly from unicode-cldr project hosted at github
 print ("Retrieve data now ...")
-URL_CLDR_JSON_LANGUAGES = "https://raw.githubusercontent.com/hanteng/language-names/master/data/CLDR_language_name_{locale}.tsv"
+URL_CLDR_JSON_LANGUAGES = "https://raw.githubusercontent.com/hanteng/language-names/master/data/_all_in_its_language.tsv"
+locale_select=['all_each']
 locale_json={}
 for l in locale_select: #[0:1] testing
     results = url_request (url  = URL_CLDR_JSON_LANGUAGES.format(locale=l))
@@ -70,6 +46,7 @@ print ("Preprocessing data now ...")
 ITEM_NAME_CODE = "{name}[{code}]"
 ITEM_CODE_NAME = "{code}:{name}"
 MISSING_LANG = "missing value of {langA} for {langB}"
+
 
 outputlist_languages={}
 for key, df in locale_json.items():
@@ -114,6 +91,6 @@ for lc, outputlist in outputlist_languages.items():
         outfile.write("{}".format(outputlist).replace("'",'"'))
         #json.dump("{}".format(outputlist), outfile)
     with open(outputfn_html, 'w', encoding="utf-8") as outfile:
-        outputtxt = '''<datalist id="languages">'''+"".join(['''<option value="{v}">'''.format(v=x) for x in outputlist])+'''</datalist>'''
+        outputtxt = '''<datalist id="countries">'''+"".join(['''<option value="{v}">'''.format(v=x) for x in outputlist])+'''</datalist>'''
         outfile.write(outputtxt)
 
